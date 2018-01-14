@@ -1,0 +1,19 @@
+{
+  "name": "flier",
+  "version": "1.0.0",
+  "description": ":fish: A JSON to SVG displayer for ReactJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adogio/Flier.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adogio/Flier/issues"
+  },
+  "homepage": "https://github.com/adogio/Flier#readme"
+}
