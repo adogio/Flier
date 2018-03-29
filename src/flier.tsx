@@ -1,8 +1,5 @@
 import * as React from 'react';
-
 import sparidae from 'sparidae';
-
-import './flier.sass';
 
 export interface IPoint {
     x: number;
@@ -30,21 +27,30 @@ export interface IFlier {
 
 export interface IProps {
     text: string;
+    option?: 'long' | 'force' | 'empty' | 'children' | 'normal';
+    raw?: boolean;
+    border?: boolean;
+    width?: number;
+    height?: number;
+    bottom?: number;
+    right?: number;
+    fontSize?: number;
+    aspect?: boolean;
+    unit?: string;
 }
 
 export interface IState {
     flier: IFlier;
 }
 
-export default class Component extends React.Component<IProps, IState> {
-
+class Flier extends React.Component<IProps, IState> {
     public constructor(props: IProps) {
         super(props);
         this.getSparidae = this.getSparidae.bind(this);
         this.renderComponents = this.renderComponents.bind(this);
         this.mapComponent = this.mapComponent.bind(this);
         this.parsePoints = this.parsePoints.bind(this);
-        this.renderText = this.renderText.bind(this);
+        this.renderContent = this.renderContent.bind(this);
         this.state = {
             flier: this.getSparidae(),
         };
@@ -53,13 +59,14 @@ export default class Component extends React.Component<IProps, IState> {
     public render() {
         return (
             <div
-                className="flier-outer"
                 style={{
                     width: `${this.state.flier.width}${this.state.flier.widthUnit}`,
                     height: `${this.state.flier.height}${this.state.flier.heightUnit}`,
+                    // overflow: 'hidden',
+                    position: 'relative',
                 }} >
                 {this.renderSVG()}
-                {this.renderText()}
+                {this.renderContent()}
             </div>);
     }
 
@@ -74,9 +81,20 @@ export default class Component extends React.Component<IProps, IState> {
     }
 
     protected getSparidae(): IFlier {
-        let sep: IFlier = JSON.parse(sparidae(this.props.text, {
+        const options = {
             popper: 'json',
-        }));
+            long: this.props.option === 'long',
+            force: this.props.option === 'force',
+            empty: this.props.option === 'empty',
+            raw: this.props.raw || null,
+            border: this.props.border || null,
+            width: this.props.width || null,
+            height: this.props.height || null,
+            fontSize: this.props.fontSize || null,
+            aspect: this.props.aspect || null,
+            unit: this.props.unit || null,
+        };
+        const sep: IFlier = JSON.parse(sparidae(this.props.text, options));
         return sep;
     }
 
@@ -84,13 +102,32 @@ export default class Component extends React.Component<IProps, IState> {
         return componentList.map(this.mapComponent);
     }
 
-    protected renderText() {
-        return (<div
-            className="flier-inner"
-            style={{ fontSize: this.state.flier.fontSize }}
-        >
-            {this.state.flier.display}
-        </div>);
+    protected renderContent() {
+        if (this.props.option === 'children') {
+            return (<div
+                style={{
+                    position: 'absolute',
+                    top: `0`,
+                    left: `0`,
+                }}
+            >
+                {this.props.children}
+            </div>);
+        } else {
+            return (<div
+                style={{
+                    fontSize: `${this.state.flier.fontSize}${this.state.flier.widthUnit}`,
+                    position: 'absolute',
+                    bottom: `${this.props.bottom || 8}%`,
+                    right: `${this.props.right || 5}%`,
+                    userSelect: 'none',
+                    cursor: 'default',
+                    fontWeight: 'bold',
+                }}
+            >
+                {this.state.flier.display}
+            </div>);
+        }
     }
 
     protected mapComponent(value: IFlierComponent, index: number) {
@@ -113,3 +150,5 @@ export default class Component extends React.Component<IProps, IState> {
         return re;
     }
 }
+
+export default Flier;
