@@ -1,6 +1,6 @@
 {
   "name": "flier",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": ":fish: A JSON to SVG displayer for ReactJS",
   "main": "dist/flier.js",
   "scripts": {},
@@ -14,9 +14,11 @@
     "url": "https://github.com/adogio/Flier/issues"
   },
   "homepage": "https://github.com/adogio/Flier#readme",
+  "dependencies": {
+    "sparidae": "^1.2.4"
+  },
   "devDependencies": {
     "@types/react": "^16.0.38",
-    "react": "^16.3.0",
-    "sparidae": "^1.2.4"
+    "react": "^16.3.0"
   }
 }
